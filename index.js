@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
+const hackatonRoutes = require('./routes/hackatonRoutes');
 const { initializeUsers } = require('./controllers/authController');
 
 const app = express();
@@ -25,6 +26,7 @@ mongoose.connect(process.env.MONGODB_URL)
 
 // Rutas API
 app.use('/api/auth', authRoutes);
+app.use('/api/hackaton', hackatonRoutes);
 
 app.get('/', (req, res) => {
   res.send('API de Hackaton Pedagógica Virtual en funcionamiento');
