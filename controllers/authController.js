@@ -34,16 +34,23 @@ exports.initializeUsers = async () => {
 exports.login = async (req, res) => {
   try {
     const { username, password } = req.body;
+    
+    if (!username || !password) {
+      return res.status(401).json({ message: 'Credenciales inválidas' });
+    }
+
+    const cleanUsername = username.trim();
+    const cleanPassword = password.trim();
 
     // Aceptar 'inivitado' como alias de 'invitado' por el typo
-    const searchUsername = username === 'inivitado' ? 'invitado' : username;
+    const searchUsername = cleanUsername === 'inivitado' ? 'invitado' : cleanUsername;
 
     const user = await User.findOne({ username: searchUsername });
     if (!user) {
       return res.status(401).json({ message: 'Credenciales inválidas' });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(cleanPassword, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: 'Credenciales inválidas' });
     }
