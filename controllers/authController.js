@@ -59,7 +59,7 @@ exports.login = async (req, res) => {
     jwt.sign(
       payload,
       process.env.JWT_SECRET || 'secret',
-      { expiresIn: '1d' },
+      { expiresIn: process.env.JWT_EXPIRES_IN || '1d' },
       (err, token) => {
         if (err) throw err;
         res.json({ token, role: user.role });
